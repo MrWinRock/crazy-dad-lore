@@ -2,20 +2,27 @@ using UnityEngine;
 
 public class MoveObject : MonoBehaviour
 {
-    public Transform target;
+    [SerializeField] private Transform target;  
     public float speed;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    void Awake()
     {
-        
+        // ถ้า target ไม่ถูก assign → หา TargetRed ใน parent
+        if (target == null && transform.parent != null)
+        {
+            Transform t = transform.parent.Find("TargetRed");
+            if (t != null) target = t;
+        }
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        Vector3 a = transform.position;
-        Vector3 b = target.position;
-        transform.position = Vector3.MoveTowards(a, b, speed);
+        if (target == null) return;
+
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            target.position,
+            speed * Time.fixedDeltaTime
+        );
     }
 }

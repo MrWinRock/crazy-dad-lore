@@ -7,8 +7,8 @@ using DeathCount;
 public class PlayerHealth : MonoBehaviour
 {
     public WheelController wheelController;
-    public int maxHealth = 100;
-    private int currentHealth;
+    private int maxHealth = 100;
+    [SerializeField] private int currentHealth;
     public GameObject fireEffect;
     public GameObject expoldeEffect;
     public AudioSource carExplode;
