@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using DeathCount;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -49,6 +49,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    [Obsolete("Obsolete")]
     public void Die()
     {
         if (DeathCounter.instance != null)
