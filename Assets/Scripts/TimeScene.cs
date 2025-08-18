@@ -1,8 +1,5 @@
-using UnityEngine;
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement; // ต้องใช้สำหรับโหลดฉากใหม่
-using UnityEngine.UI;
 using TMPro;
 
 public class TimeScene : MonoBehaviour
@@ -12,6 +9,7 @@ public class TimeScene : MonoBehaviour
     public TextMeshProUGUI timeText; // Reference to the TextMeshPro UI component
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Obsolete("Obsolete")]
     void Start()
     {
         playerHealth = FindObjectOfType<PlayerHealth>();
