@@ -1,3 +1,4 @@
+using DeathCount;
 using UnityEngine;
 
 public class FirstTryAudio : MonoBehaviour
