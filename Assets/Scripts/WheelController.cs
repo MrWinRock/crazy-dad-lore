@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class WheelController : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class WheelController : MonoBehaviour
     public float turnSensitivity = 1.0f;
     public float maxSteerAngle = 30.0f;
 
-    public Vector3 _centerOfMass;
+    [FormerlySerializedAs("_centerOfMass")] public Vector3 centerOfMass;
 
     public List<Wheel> wheels;
 
@@ -49,7 +50,7 @@ public class WheelController : MonoBehaviour
 
     private Rigidbody carRb;
 
-    public float _steerAngle;
+    [FormerlySerializedAs("_steerAngle")] public float steerAngle;
     public float boosterForce = 1000f;
     public float maxSpeed = 5f; // Maximum speed in Unity units per second
 
@@ -70,13 +71,24 @@ public class WheelController : MonoBehaviour
     void Start()
     {
         carRb = GetComponent<Rigidbody>();
-        carRb.centerOfMass = _centerOfMass;
+        carRb.centerOfMass = centerOfMass;
         nitroEffect1.SetActive(false);
         nitroEffect2.SetActive(false);
         nitroEffect3.SetActive(false);
         nitroEffect4.SetActive(false);
-        
         driftSound.Stop();
+        ValidateWheels();
+    }
+
+    void ValidateWheels()
+    {
+        for (int i = 0; i < wheels.Count; i++)
+        {
+            if (wheels[i].wheelEffectObj == null)
+            {
+                Debug.LogError($"Wheel at index {i} in WheelController has no wheelEffectObj assigned. Please assign it in the Inspector.");
+            }
+        }
     }
 
     void Update()
@@ -137,8 +149,8 @@ public class WheelController : MonoBehaviour
         {
             if (wheel.axel == Axel.Front)
             {
-                _steerAngle = steerInput * turnSensitivity * maxSteerAngle;
-                wheel.wheelCollider.steerAngle = Mathf.Lerp(wheel.wheelCollider.steerAngle, _steerAngle, 0.6f);
+                steerAngle = steerInput * turnSensitivity * maxSteerAngle;
+                wheel.wheelCollider.steerAngle = Mathf.Lerp(wheel.wheelCollider.steerAngle, steerAngle, 0.6f);
 
 
             }
@@ -162,10 +174,23 @@ public class WheelController : MonoBehaviour
     {
         foreach (var wheel in wheels)
         {
-            //var dirtParticleMainSettings = wheel.smokeParticle.main;
-            if ((_steerAngle < checkLeftSteerAngle || _steerAngle > checkRightSteerAngle) && wheel.wheelCollider.isGrounded)
+            if (wheel.wheelEffectObj == null)
             {
-                wheel.wheelEffectObj.GetComponentInChildren<TrailRenderer>().emitting = true;
+                // Skip this wheel, error already logged in ValidateWheels
+                continue;
+            }
+            //var dirtParticleMainSettings = wheel.smokeParticle.main;
+            if ((steerAngle < checkLeftSteerAngle || steerAngle > checkRightSteerAngle) && wheel.wheelCollider.isGrounded)
+            {
+                var trail = wheel.wheelEffectObj.GetComponentInChildren<TrailRenderer>();
+                if (trail != null)
+                {
+                    trail.emitting = true;
+                }
+                else
+                {
+                    Debug.LogWarning($"TrailRenderer not found in wheelEffectObj for wheel: {wheel}");
+                }
                 nitroEffect1.SetActive(true);
                 nitroEffect2.SetActive(true);
                 if (driftSound.isPlaying == false)
@@ -174,7 +199,11 @@ public class WheelController : MonoBehaviour
             else
             {
                 driftSound.Stop();
-                wheel.wheelEffectObj.GetComponentInChildren<TrailRenderer>().emitting = false;
+                var trail = wheel.wheelEffectObj.GetComponentInChildren<TrailRenderer>();
+                if (trail != null)
+                {
+                    trail.emitting = false;
+                }
                 nitroEffect1.SetActive(false);
                 nitroEffect2.SetActive(false);
             }
@@ -203,7 +232,7 @@ public class WheelController : MonoBehaviour
         boosterForce = 800;
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
         crashSound.Play();
         

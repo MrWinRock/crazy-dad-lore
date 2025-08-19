@@ -3,25 +3,16 @@ using UnityEngine;
 
 public class SpawnBarrel : MonoBehaviour
 {
-    public List<GameObject> barrel = new List<GameObject>();
-    void Start()
-    {
-    }
+    [SerializeField] private List<GameObject> barrelParents = new List<GameObject>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (!other.CompareTag("Player")) return;
+
+        foreach (GameObject parent in barrelParents)
         {
-            foreach (GameObject b in barrel)
-            {
-                b.SetActive(true);
-            }
+            if (parent != null)
+                parent.SetActive(true); // ✅ เปิดทั้งชุด Barrel + TargetRed + BarrelExposive
         }
     }
 }

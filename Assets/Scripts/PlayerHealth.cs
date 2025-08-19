@@ -2,13 +2,13 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using DeathCount;
 
 public class PlayerHealth : MonoBehaviour
 {
     public WheelController wheelController;
-    public int maxHealth = 100;
-    private int currentHealth;
+    private int maxHealth = 100;
+    [SerializeField] private int currentHealth;
     public GameObject fireEffect;
     public GameObject expoldeEffect;
     public AudioSource carExplode;
@@ -49,6 +49,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    [Obsolete("Die() is obsolete. Use a custom respawn or game over handler instead of reloading the scene directly.")]
     public void Die()
     {
         if (DeathCounter.instance != null)

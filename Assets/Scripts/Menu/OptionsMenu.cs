@@ -1,86 +1,89 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
 
-public class OptionsMenu : MonoBehaviour
+namespace Menu
 {
-    public GameObject optionsMenu;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class OptionsMenu : MonoBehaviour
     {
-    }
+        public GameObject optionsMenu;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Update is called once per frame
+        [Obsolete("Update method is obsolete. Use a dedicated input handler or event-based system for pause functionality instead.")]
+        void Update()
         {
-            TogglePause();
-        }
-    }
-
-    public void Resume()
-    {
-        TogglePause(false);
-    }
-
-    public void Reset()
-    {
-        TogglePause(false);
-
-        if (SceneManager.GetActiveScene().name == "Wild_West")
-        {
-            FindObjectOfType<PlayerHealth>()?.Die();
-        }
-        else
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-    }
-
-    public void MainMenu()
-    {
-        TogglePause(false);
-        SceneManager.LoadScene(0);
-    }
-
-    private void TogglePause()
-    {
-        bool isPaused = !optionsMenu.activeSelf;
-        optionsMenu.SetActive(isPaused);
-        Time.timeScale = isPaused ? 0 : 1;
-
-        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
-        foreach (var audioSource in audioSources)
-        {
-            if (isPaused)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                audioSource.Pause();
+                TogglePause();
+            }
+        }
+
+        [Obsolete("Obsolete")]
+        public void Resume()
+        {
+            TogglePause(false);
+        }
+
+        [Obsolete("Obsolete")]
+        public void Reset()
+        {
+            TogglePause(false);
+
+            if (SceneManager.GetActiveScene().name == "Wild_West")
+            {
+                FindObjectOfType<PlayerHealth>()?.Die();
             }
             else
             {
-                audioSource.UnPause();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
-    }
+
+        [Obsolete("Obsolete")]
+        public void MainMenu()
+        {
+            TogglePause(false);
+            SceneManager.LoadScene(0);
+        }
+
+        [Obsolete("Obsolete")]
+        private void TogglePause()
+        {
+            bool isPaused = !optionsMenu.activeSelf;
+            optionsMenu.SetActive(isPaused);
+            Time.timeScale = isPaused ? 0 : 1;
+
+            AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+            foreach (var audioSource in audioSources)
+            {
+                if (isPaused)
+                {
+                    audioSource.Pause();
+                }
+                else
+                {
+                    audioSource.UnPause();
+                }
+            }
+        }
     
-    private void TogglePause(bool isPaused)
-    {
-        optionsMenu.SetActive(isPaused);
-        Time.timeScale = isPaused ? 0 : 1;
-
-        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
-        foreach (var audioSource in audioSources)
+        [Obsolete("Obsolete")]
+        private void TogglePause(bool isPaused)
         {
-            if (isPaused)
+            optionsMenu.SetActive(isPaused);
+            Time.timeScale = isPaused ? 0 : 1;
+
+            AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+            foreach (var audioSource in audioSources)
             {
-                audioSource.Pause();
-            }
-            else
-            {
-                audioSource.UnPause();
+                if (isPaused)
+                {
+                    audioSource.Pause();
+                }
+                else
+                {
+                    audioSource.UnPause();
+                }
             }
         }
     }

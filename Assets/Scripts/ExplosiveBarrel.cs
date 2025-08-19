@@ -5,14 +5,17 @@ public class ExplosiveBarrel : MonoBehaviour
 {
     public GameObject barrel;
     public GameObject explosionEffect;
-    private float setActiveTime = 2;
-    private bool isExploding = false;
+    private float setActiveTime;
+    private bool isExploding;
 
     [SerializeField] private float range;
 
     public AudioSource bombSound;
     private PlayerHealth playerHealth;
 
+    private Collider[] overlapResults = new Collider[10]; // Buffer for non-allocating overlap
+
+    [Obsolete("Awake is obsolete. Use Start() for initialization instead.")]
     void Awake()
     {
         barrel.SetActive(true);
@@ -20,16 +23,10 @@ public class ExplosiveBarrel : MonoBehaviour
         playerHealth = FindObjectOfType<PlayerHealth>();
     }
 
-    void Update()
-    {
-
-    }
-
     void Explode()
     {
         
         bombSound.Play();
-        isExploding = true;
         
         explosionEffect.transform.SetParent(null);
         
@@ -39,9 +36,10 @@ public class ExplosiveBarrel : MonoBehaviour
         
         Destroy(explosionEffect, 3f);
         
-        Collider [] player = Physics.OverlapSphere(transform.position, range);
-        foreach (Collider col in player)
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, range, overlapResults);
+        for (int i = 0; i < hitCount; i++)
         {
+            Collider col = overlapResults[i];
             if (col.CompareTag("Player"))
             {
                 col.GetComponent<PlayerHealth>().TakeDamage(playerHealth.bombDamage);
