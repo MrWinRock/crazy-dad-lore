@@ -9,7 +9,7 @@ public class TimeScene : MonoBehaviour
     public TextMeshProUGUI timeText; // Reference to the TextMeshPro UI component
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [Obsolete("Obsolete")]
+    [Obsolete("Use Awake() for initialization instead of Start().")]
     void Start()
     {
         playerHealth = FindObjectOfType<PlayerHealth>();

@@ -49,7 +49,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    [Obsolete("Obsolete")]
+    [Obsolete("Die() is obsolete. Use a custom respawn or game over handler instead of reloading the scene directly.")]
     public void Die()
     {
         if (DeathCounter.instance != null)

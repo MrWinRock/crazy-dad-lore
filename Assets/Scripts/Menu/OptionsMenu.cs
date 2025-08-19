@@ -9,7 +9,7 @@ namespace Menu
         public GameObject optionsMenu;
 
         // Update is called once per frame
-        [Obsolete("Obsolete")]
+        [Obsolete("Update method is obsolete. Use a dedicated input handler or event-based system for pause functionality instead.")]
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))

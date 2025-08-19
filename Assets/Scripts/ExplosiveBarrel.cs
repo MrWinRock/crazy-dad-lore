@@ -15,7 +15,7 @@ public class ExplosiveBarrel : MonoBehaviour
 
     private Collider[] overlapResults = new Collider[10]; // Buffer for non-allocating overlap
 
-    [Obsolete("Obsolete")]
+    [Obsolete("Awake is obsolete. Use Start() for initialization instead.")]
     void Awake()
     {
         barrel.SetActive(true);

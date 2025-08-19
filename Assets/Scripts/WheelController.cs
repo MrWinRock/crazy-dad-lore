@@ -232,7 +232,7 @@ public class WheelController : MonoBehaviour
         boosterForce = 800;
     }
 
-    private void OnCollisionEnter()
+    private void OnCollisionEnter(Collision collision)
     {
         crashSound.Play();
         
