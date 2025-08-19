@@ -21,7 +21,7 @@ namespace Editor
             int removed = 0;
             foreach (var t in transforms)
             {
-                // ฟังก์ชันนี้มีใน UnityEditor.GameObjectUtility
+                // This function is available in UnityEditor.GameObjectUtility
                 removed += GameObjectUtility.RemoveMonoBehavioursWithMissingScript(t.gameObject);
             }
             if (removed > 0)
